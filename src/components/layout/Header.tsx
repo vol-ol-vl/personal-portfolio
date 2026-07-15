@@ -1,7 +1,9 @@
-const Header = () => {
-  const name = 'Olga Volkova';
-  const role = 'Frontend Developer';
+type HeaderProps = {
+  name: string;
+  role: string;
+};
 
+const Header = ({name, role}: HeaderProps) => {
   return (
     <header>
         <h1>{name}</h1>
