@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 
 const Contact = () => {
     const [inputName, setInputName] = useState('Ольга');
-    const handleChange = (event) => {
-        setInputName(event.target.value);
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setInputName(event.currentTarget.value);
     };
 
     return (
