@@ -10,7 +10,6 @@ const App = () => {
   const profile = {
     name: 'Olga Volkova',
     role: 'Frontend Developer',
-    skills: ['JavaScript', 'Ajax', 'REST API', 'HTML', 'CSS', 'Webpack', 'Gulp', 'Git', 'SVN'],
   }
 
   return (
@@ -20,7 +19,7 @@ const App = () => {
         role={profile.role} />
       <Hero />
       <About />
-      <Skills skills={profile.skills} />
+      <Skills />
       <Contact />
       <Footer />
     </>

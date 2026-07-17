@@ -1,22 +1,32 @@
 import { useState, type ChangeEvent } from "react";
 
-type SkillsProps = {
-    skills: string[]
-}
-
-const Skills = ({skills}: SkillsProps) => {
+const Skills = () => {
+    const [skills, setSkills] = useState(['JavaScript', 'Ajax', 'REST API', 'HTML', 'CSS', 'Webpack', 'Gulp', 'Git', 'SVN']);
     const [isVisible, setIsVisible] = useState(true);
     const [search, setSearch] = useState('');
+    const [newSkill, setNewSkill] = useState('');
 
-    const normalizedSearch = search.toLowerCase();
-    const filteredSkills = skills.filter(skill => skill.toLowerCase().includes(normalizedSearch));
+    const normalizeText = (text: string) => text.trim().toLowerCase();
+
+    const normalizedSearch = normalizeText(search);
+    const filteredSkills = skills.filter(skill => normalizeText(skill).includes(normalizedSearch));
     const buttonText = isVisible ? 'Скрыть навыки' : 'Показать навыки';
 
-    const handleClick = () => {
+    const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setSearch(event.currentTarget.value);
+    };
+    const handleToggleVisibility = () => {
         setIsVisible(isVisible => !isVisible);
     };
-     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setSearch(event.currentTarget.value);
+    const handleNewSkillChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setNewSkill(event.currentTarget.value);
+    };
+    const handleAddSkillClick = () => {
+        const normalizedNewSkill = normalizeText(newSkill);
+        if (normalizedNewSkill.length && !skills.some(skill => normalizeText(skill) === normalizedNewSkill)) {
+            setSkills(prev => [...prev, newSkill.trim()]);
+            setNewSkill('');
+        }
     };
 
     return (
@@ -24,7 +34,7 @@ const Skills = ({skills}: SkillsProps) => {
             <h2>Навыки</h2>
             <input
                 value={search}
-                onChange={handleChange}
+                onChange={handleSearchChange}
             />
             {isVisible && (
                 filteredSkills.length > 0 
@@ -36,7 +46,12 @@ const Skills = ({skills}: SkillsProps) => {
                     </ul>
                     : <p>Ничего не найдено</p>
             )}           
-            <button onClick={handleClick}>{buttonText}</button>
+            <button onClick={handleToggleVisibility}>{buttonText}</button>
+            <input
+                value={newSkill}
+                onChange={handleNewSkillChange}
+            />
+            <button onClick={handleAddSkillClick}>Добавить навык</button>
         </section>
     );
 }
