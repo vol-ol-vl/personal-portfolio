@@ -1,15 +1,21 @@
 import { useState, type ChangeEvent } from "react";
 
-const Skills = () => {
-    const [skills, setSkills] = useState(['JavaScript', 'Ajax', 'REST API', 'HTML', 'CSS', 'Webpack', 'Gulp', 'Git', 'SVN']);
+import type { Skill } from "../../types/skill";
+
+type SkillsProps = {
+    skills: Skill[],
+    onAddSkill: (skillName: string) => void
+}
+
+const normalizeText = (text: string) => text.trim().toLowerCase();
+
+const Skills = ({skills, onAddSkill}: SkillsProps) => {
     const [isVisible, setIsVisible] = useState(true);
     const [search, setSearch] = useState('');
     const [newSkill, setNewSkill] = useState('');
 
-    const normalizeText = (text: string) => text.trim().toLowerCase();
-
     const normalizedSearch = normalizeText(search);
-    const filteredSkills = skills.filter(skill => normalizeText(skill).includes(normalizedSearch));
+    const filteredSkills = skills.filter(skill => normalizeText(skill.name).includes(normalizedSearch));
     const buttonText = isVisible ? 'Скрыть навыки' : 'Показать навыки';
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,8 +29,8 @@ const Skills = () => {
     };
     const handleAddSkillClick = () => {
         const normalizedNewSkill = normalizeText(newSkill);
-        if (normalizedNewSkill.length && !skills.some(skill => normalizeText(skill) === normalizedNewSkill)) {
-            setSkills(prev => [...prev, newSkill.trim()]);
+        if (normalizedNewSkill.length && !skills.some(skill => normalizeText(skill.name) === normalizedNewSkill)) {
+            onAddSkill(newSkill.trim());
             setNewSkill('');
         }
     };
@@ -40,7 +46,7 @@ const Skills = () => {
                 filteredSkills.length > 0 
                    ? <ul>
                         {filteredSkills.map(skill  => (
-                            <li key={skill}>{skill}</li>
+                            <li key={skill.id}>{skill.name}</li>
                             )
                         )}
                     </ul>
