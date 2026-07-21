@@ -4,12 +4,17 @@ import type { Skill } from "../../types/skill";
 
 type SkillsProps = {
     skills: Skill[],
-    onAddSkill: (skillName: string) => void
+    onAddSkill: (skillName: string) => void,
+    onDeleteSkill: (skillId: number) => void
 }
 
 const normalizeText = (text: string) => text.trim().toLowerCase();
 
-const Skills = ({skills, onAddSkill}: SkillsProps) => {
+const Skills = ({
+        skills, 
+        onAddSkill, 
+        onDeleteSkill
+    }: SkillsProps) => {
     const [isVisible, setIsVisible] = useState(true);
     const [search, setSearch] = useState('');
     const [newSkill, setNewSkill] = useState('');
@@ -46,7 +51,10 @@ const Skills = ({skills, onAddSkill}: SkillsProps) => {
                 filteredSkills.length > 0 
                    ? <ul>
                         {filteredSkills.map(skill  => (
-                            <li key={skill.id}>{skill.name}</li>
+                            <li key={skill.id}>
+                                {skill.name}
+                                <button onClick={() => onDeleteSkill(skill.id)}>Удалить</button>
+                            </li>
                             )
                         )}
                     </ul>

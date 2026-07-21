@@ -76,6 +76,10 @@ const App = () => {
     setSkills(prev => [...prev, newSkill]);
   };
 
+  const onDeleteSkill = (skillId: number) => {
+    setSkills(prev => prev.filter(item => item.id !== skillId));
+  };
+
   return (
     <>
       <Header 
@@ -86,7 +90,8 @@ const App = () => {
       <About />
       <Skills
         skills={skills}
-        onAddSkill={onAddSkill} />
+        onAddSkill={onAddSkill}
+        onDeleteSkill={onDeleteSkill} />
       <Contact />
       <Footer />
     </>
