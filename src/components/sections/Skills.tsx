@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent } from "react";
 
-import type { Skill } from "../../types/skill";
+import type { Skill, SkillFilter } from "../../types/skill";
+import { normalizeText } from "../../utils/text";
 
 type SkillsProps = {
     skills: Skill[],
@@ -8,8 +9,6 @@ type SkillsProps = {
     onDeleteSkill: (skillId: number) => void,
     onUpdateSkill: (skillId: number, skillName: string) => void
 }
-
-const normalizeText = (text: string) => text.trim().toLowerCase();
 
 const Skills = ({
         skills, 
@@ -22,9 +21,16 @@ const Skills = ({
     const [newSkill, setNewSkill] = useState('');
     const [editingSkillId, setEditingSkillId] = useState<number | null>(null);
     const [editingSkillName, setEditingSkillName] = useState('');
+    const [category, setCategory] = useState<SkillFilter>('all');
 
     const normalizedSearch = normalizeText(search);
-    const filteredSkills = skills.filter(skill => normalizeText(skill.name).includes(normalizedSearch));
+    const filteredSkills = skills.filter(skill => {
+        const matchesSearch = normalizeText(skill.name).includes(normalizedSearch);
+        const matchesCategory = category === 'all' || skill.category === category;
+        return matchesSearch && matchesCategory;
+    });
+    const sortedByNameSkills = [...filteredSkills].sort((skillA, skillB) => normalizeText(skillA.name).localeCompare(normalizeText(skillB.name)));
+
     const buttonText = isVisible ? 'Скрыть навыки' : 'Показать навыки';
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -50,10 +56,13 @@ const Skills = ({
         setEditingSkillId(skill.id);
         setEditingSkillName(skill.name);
     };
-    const handleUpdateSkill= (skillId:number, skillName: string) => {
+    const handleUpdateSkill = (skillId:number, skillName: string) => {
         onUpdateSkill(skillId, skillName.trim());
         setEditingSkillName('');
         setEditingSkillId(null);
+    };
+    const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setCategory(event.currentTarget.value as SkillFilter);
     };
 
     return (
@@ -63,10 +72,18 @@ const Skills = ({
                 value={search}
                 onChange={handleSearchChange}
             />
-            {isVisible && (
-                filteredSkills.length > 0 
+            <select
+                value={category}
+                onChange={handleCategoryChange}
+            >
+                <option value='all'>Все</option>
+                <option value='language'>Языки программирования</option>
+                <option value='other'>Другие</option>  
+            </select>
+            { isVisible && (
+                sortedByNameSkills.length > 0 
                    ? <ul>
-                        {filteredSkills.map(skill  => (
+                        { sortedByNameSkills.map(skill  => (
                             <li key={skill.id}>
                                 {(editingSkillId === skill.id)
                                 ? <span>
@@ -75,15 +92,14 @@ const Skills = ({
                                         onChange={handleSkillNameChange}
                                     />
                                     <button onClick={() => handleUpdateSkill(skill.id, editingSkillName)}>Схранить</button>
-                                  </span>
+                                </span>
                                 : <span>
                                     {skill.name}
                                     <button onClick={() => handleChangeSkill(skill)}>Редактировать</button>  
-                                  </span>
+                                </span>
                                 }
                                 <button onClick={() => onDeleteSkill(skill.id)}>Удалить</button>
-                            </li>
-                            )
+                            </li>)
                         )}
                     </ul>
                     : <p>Ничего не найдено</p>
