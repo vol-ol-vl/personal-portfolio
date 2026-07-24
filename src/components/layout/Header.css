@@ -1,0 +1,23 @@
+.header {
+  padding-block: 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header__brand {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.header__name {
+  font-size: 2rem;
+}
+
+.header__role {
+  color: #666;
+}
+
+.header__skill-count {
+  margin-top: 8px;
+  color: #666;
+}

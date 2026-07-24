@@ -3,6 +3,8 @@ import { useState, type ChangeEvent } from "react";
 import type { Skill, SkillFilter } from "../../types/skill";
 import { normalizeText } from "../../utils/text";
 
+import './Skills.css';
+
 type SkillsProps = {
     skills: Skill[],
     onAddSkill: (skillName: string) => void,
@@ -66,50 +68,92 @@ const Skills = ({
     };
 
     return (
-        <section>
-            <h2>Навыки</h2>
-            <input
-                value={search}
-                onChange={handleSearchChange}
-            />
-            <select
-                value={category}
-                onChange={handleCategoryChange}
-            >
-                <option value='all'>Все</option>
-                <option value='language'>Языки программирования</option>
-                <option value='other'>Другие</option>  
-            </select>
-            { isVisible && (
-                sortedByNameSkills.length > 0 
-                   ? <ul>
-                        { sortedByNameSkills.map(skill  => (
-                            <li key={skill.id}>
-                                {(editingSkillId === skill.id)
-                                ? <span>
-                                    <input 
-                                        value={editingSkillName}
-                                        onChange={handleSkillNameChange}
-                                    />
-                                    <button onClick={() => handleUpdateSkill(skill.id, editingSkillName)}>Схранить</button>
-                                </span>
-                                : <span>
-                                    {skill.name}
-                                    <button onClick={() => handleChangeSkill(skill)}>Редактировать</button>  
-                                </span>
-                                }
-                                <button onClick={() => onDeleteSkill(skill.id)}>Удалить</button>
-                            </li>)
-                        )}
-                    </ul>
-                    : <p>Ничего не найдено</p>
-            )}           
-            <button onClick={handleToggleVisibility}>{buttonText}</button>
-            <input
-                value={newSkill}
-                onChange={handleNewSkillChange}
-            />
-            <button onClick={handleAddSkillClick}>Добавить навык</button>
+        <section className="skills">
+            <div className="container">
+                <h2 className="skills__title">Навыки</h2>
+                
+                <div className="skills__filters">
+                    <input
+                        value={search}
+                        onChange={handleSearchChange}
+                    />
+                    <select
+                        value={category}
+                        onChange={handleCategoryChange}
+                    >
+                        <option value='all'>Все</option>
+                        <option value='language'>Языки программирования</option>
+                        <option value='other'>Другие</option>  
+                    </select>
+                </div>
+                
+                { isVisible && (
+                    sortedByNameSkills.length > 0 
+                    ? <ul className="skills__list">
+                            { sortedByNameSkills.map(skill  => (
+                                <li className="skills__item" key={skill.id}>
+                                    {editingSkillId === skill.id ? (
+                                        <div className="skills__edit">
+                                        <input
+                                            className="skills__edit-input"
+                                            value={editingSkillName}
+                                            onChange={handleSkillNameChange}
+                                        />
+
+                                        <button
+                                            className="skills__save-button"
+                                            onClick={() => handleUpdateSkill(skill.id, editingSkillName)}
+                                        >
+                                            Сохранить
+                                        </button>
+                                        </div>
+                                    ) : (
+                                        <div className="skills__info">
+                                        <span className="skills__name">{skill.name}</span>
+
+                                        <button
+                                            className="skills__edit-button"
+                                            onClick={() => handleChangeSkill(skill)}
+                                        >
+                                            Редактировать
+                                        </button>
+                                        </div>
+                                    )}
+
+                                    <button
+                                        className="skills__delete-button"
+                                        onClick={() => onDeleteSkill(skill.id)}
+                                    >
+                                        Удалить
+                                    </button>
+                                    </li>)
+                            )}
+                        </ul>
+                        : <p className="skills__empty">Ничего не найдено</p>
+                )}
+
+                <button
+                    className="skills__toggle"
+                    onClick={handleToggleVisibility}
+                >
+                    {buttonText}
+                </button>
+
+                <div className="skills__add">
+                    <input
+                        className="skills__add-input"
+                        value={newSkill}
+                        onChange={handleNewSkillChange}
+                        placeholder="Новый навык"
+                    />
+                    <button
+                        className="skills__add-button"
+                        onClick={handleAddSkillClick}
+                    >
+                        Добавить навык
+                    </button>
+                </div>
+            </div>
         </section>
     );
 }
