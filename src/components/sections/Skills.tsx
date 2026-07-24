@@ -59,9 +59,17 @@ const Skills = ({
         setEditingSkillName(skill.name);
     };
     const handleUpdateSkill = (skillId:number, skillName: string) => {
-        onUpdateSkill(skillId, skillName.trim());
-        setEditingSkillName('');
-        setEditingSkillId(null);
+        const normalizedSkillName = normalizeText(skillName);
+        const isDuplicate = skills.some(
+            skill =>
+                skill.id !== skillId &&
+                normalizeText(skill.name) === normalizedSkillName
+        );
+        if (normalizedSkillName.length > 0 && !isDuplicate) {
+            onUpdateSkill(skillId, skillName.trim());
+            setEditingSkillName('');
+            setEditingSkillId(null);
+        }
     };
     const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setCategory(event.currentTarget.value as SkillFilter);
