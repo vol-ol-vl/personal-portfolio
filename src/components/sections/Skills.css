@@ -1,0 +1,136 @@
+.skills {
+  padding-block: var(--section-spacing);
+}
+
+.skills__title {
+  margin-bottom: 24px;
+  font-size: 2rem;
+}
+
+.skills__filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.skills__search,
+.skills__category {
+  padding: 8px 12px;
+}
+
+.skills__search {
+  width: 300px;
+}
+
+.skills__list {
+  max-width: 800px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skills__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.skills__info,
+.skills__edit {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.skills__name {
+  min-width: 120px;
+}
+
+.skills__empty {
+  margin-bottom: 24px;
+}
+
+.skills__toggle {
+  margin-top: 24px;
+}
+
+.skills__add {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.skills__add-input {
+  padding: 8px 12px;
+}
+
+.skills__edit-button,
+.skills__delete-button,
+.skills__toggle,
+.skills__add-button,
+.skills__save-button {
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.skills__edit-button:hover,
+.skills__delete-button:hover,
+.skills__toggle:hover,
+.skills__add-button:hover,
+.skills__save-button:hover {
+  background-color: #f5f5f5;
+}
+
+.skills__search,
+.skills__category,
+.skills__add-input,
+.skills__edit-input {
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+.skills__delete-button {
+  color: #b42318;
+  border-color: #f0b8b4;
+}
+
+@media (max-width: 600px) {
+  .skills__filters {
+    flex-direction: column;
+  }
+
+  .skills__search {
+    width: 100%;
+  }
+
+  .skills__item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .skills__info,
+  .skills__edit {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .skills__delete-button {
+    align-self: flex-start;
+  }
+
+  .skills__add {
+    flex-direction: column;
+  }
+
+  .skills__add-input {
+    width: 100%;
+  }
+}

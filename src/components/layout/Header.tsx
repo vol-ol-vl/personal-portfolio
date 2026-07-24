@@ -1,3 +1,5 @@
+import './Header.css';
+
 type HeaderProps = {
   name: string;
   role: string;
@@ -6,10 +8,14 @@ type HeaderProps = {
 
 const Header = ({name, role, skillCount}: HeaderProps) => {
   return (
-    <header>
-        <h1>{name}</h1>
-        <p>{role}</p>
-        <p>Количество навыков: {skillCount}</p>
+    <header className='header'>
+      <div className='container'>
+        <div className="header__brand">
+          <h1>{name}</h1>
+          <p>{role}</p>
+        </div>
+        <p className="header__skill-count">Количество навыков: {skillCount}</p>
+      </div>
     </header>
   );
 };

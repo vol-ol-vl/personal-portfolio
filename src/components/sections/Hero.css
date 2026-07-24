@@ -1,0 +1,24 @@
+.hero {
+  padding-block: var(--section-spacing);
+  background-color: #f5f7fa;
+}
+
+.hero__title {
+  margin-bottom: 16px;
+  font-size: 2.5rem;
+}
+
+.hero__description {
+  max-width: 600px;
+  margin-bottom: 24px;
+  font-size: 1.125rem;
+  color: #666;
+}
+
+.hero__button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  background-color: #646cff;
+}

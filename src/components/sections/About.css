@@ -1,0 +1,16 @@
+.about {
+  padding-block: var(--section-spacing);
+}
+
+.about__title {
+  margin-bottom: 24px;
+  font-size: 2rem;
+}
+
+.about__content {
+  max-width: 800px;
+}
+
+.about__paragraph + .about__paragraph {
+  margin-top: 16px;
+}
