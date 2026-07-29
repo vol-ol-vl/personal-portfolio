@@ -4,6 +4,7 @@ import type { Skill, SkillFilter } from "../../../types/skill";
 import { normalizeText } from "../../../utils/text";
 
 import SkillItem from "./SkillItem";
+import SkillFilters from "./SkillFilters";
 import AddSkillForm from "./AddSkillForm";
 
 import './Skills.css';
@@ -81,21 +82,13 @@ const Skills = ({
         <section className="skills">
             <div className="container">
                 <h2 className="skills__title">Навыки</h2>
-                
-                <div className="skills__filters">
-                    <input
-                        value={search}
-                        onChange={handleSearchChange}
-                    />
-                    <select
-                        value={category}
-                        onChange={handleCategoryChange}
-                    >
-                        <option value='all'>Все</option>
-                        <option value='language'>Языки программирования</option>
-                        <option value='other'>Другие</option>  
-                    </select>
-                </div>
+
+                <SkillFilters
+                    search={search}
+                    category={category}
+                    onSearchChange={handleSearchChange}
+                    onCategoryChange={handleCategoryChange}
+                />
                 
                 { isVisible && (
                     sortedByNameSkills.length > 0 
