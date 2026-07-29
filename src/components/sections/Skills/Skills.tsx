@@ -1,8 +1,9 @@
 import { useState, type ChangeEvent } from "react";
 
-import type { Skill, SkillFilter } from "../../types/skill";
-import { normalizeText } from "../../utils/text";
+import type { Skill, SkillFilter } from "../../../types/skill";
+import { normalizeText } from "../../../utils/text";
 
+import SkillItem from "./SkillItem";
 import './Skills.css';
 
 type SkillsProps = {
@@ -21,8 +22,7 @@ const Skills = ({
     const [isVisible, setIsVisible] = useState(true);
     const [search, setSearch] = useState('');
     const [newSkill, setNewSkill] = useState('');
-    const [editingSkillId, setEditingSkillId] = useState<number | null>(null);
-    const [editingSkillName, setEditingSkillName] = useState('');
+
     const [category, setCategory] = useState<SkillFilter>('all');
 
     const normalizedSearch = normalizeText(search);
@@ -50,29 +50,29 @@ const Skills = ({
             onAddSkill(newSkill.trim());
             setNewSkill('');
         }
+    };    
+    const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setCategory(event.currentTarget.value as SkillFilter);
     };
-    const handleSkillNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setEditingSkillName(event.currentTarget.value);
-    };
-    const handleChangeSkill = (skill: Skill) => {
-        setEditingSkillId(skill.id);
-        setEditingSkillName(skill.name);
-    };
-    const handleUpdateSkill = (skillId:number, skillName: string) => {
+    const handleUpdateSkill = (
+        skillId: number,
+        skillName: string
+    ) : boolean => {
         const normalizedSkillName = normalizeText(skillName);
+
         const isDuplicate = skills.some(
             skill =>
                 skill.id !== skillId &&
                 normalizeText(skill.name) === normalizedSkillName
         );
-        if (normalizedSkillName.length > 0 && !isDuplicate) {
-            onUpdateSkill(skillId, skillName.trim());
-            setEditingSkillName('');
-            setEditingSkillId(null);
+
+        if (normalizedSkillName.length === 0 || isDuplicate) {
+            return false;
         }
-    };
-    const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setCategory(event.currentTarget.value as SkillFilter);
+
+        onUpdateSkill(skillId, skillName.trim());
+        
+        return true;
     };
 
     return (
@@ -99,42 +99,13 @@ const Skills = ({
                     sortedByNameSkills.length > 0 
                     ? <ul className="skills__list">
                             { sortedByNameSkills.map(skill  => (
-                                <li className="skills__item" key={skill.id}>
-                                    {editingSkillId === skill.id ? (
-                                        <div className="skills__edit">
-                                        <input
-                                            className="skills__edit-input"
-                                            value={editingSkillName}
-                                            onChange={handleSkillNameChange}
-                                        />
-
-                                        <button
-                                            className="skills__save-button"
-                                            onClick={() => handleUpdateSkill(skill.id, editingSkillName)}
-                                        >
-                                            Сохранить
-                                        </button>
-                                        </div>
-                                    ) : (
-                                        <div className="skills__info">
-                                        <span className="skills__name">{skill.name}</span>
-
-                                        <button
-                                            className="skills__edit-button"
-                                            onClick={() => handleChangeSkill(skill)}
-                                        >
-                                            Редактировать
-                                        </button>
-                                        </div>
-                                    )}
-
-                                    <button
-                                        className="skills__delete-button"
-                                        onClick={() => onDeleteSkill(skill.id)}
-                                    >
-                                        Удалить
-                                    </button>
-                                    </li>)
+                                <SkillItem
+                                    skill={skill}
+                                    key={skill.id}
+                                    onDeleteSkill={onDeleteSkill}
+                                    onUpdateSkill={handleUpdateSkill}
+                                />
+                                )
                             )}
                         </ul>
                         : <p className="skills__empty">Ничего не найдено</p>

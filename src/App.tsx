@@ -7,7 +7,7 @@ import { createSkill } from './utils/skill'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import About from './components/sections/About'
-import Skills from './components/sections/Skills'
+import Skills from './components/sections/Skills/Skills'
 import Hero from './components/sections/Hero'
 import Contact from './components/sections/Contact'
 
