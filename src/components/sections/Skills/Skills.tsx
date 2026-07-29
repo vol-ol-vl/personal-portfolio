@@ -4,6 +4,8 @@ import type { Skill, SkillFilter } from "../../../types/skill";
 import { normalizeText } from "../../../utils/text";
 
 import SkillItem from "./SkillItem";
+import AddSkillForm from "./AddSkillForm";
+
 import './Skills.css';
 
 type SkillsProps = {
@@ -19,10 +21,9 @@ const Skills = ({
         onDeleteSkill,
         onUpdateSkill
     }: SkillsProps) => {
+
     const [isVisible, setIsVisible] = useState(true);
     const [search, setSearch] = useState('');
-    const [newSkill, setNewSkill] = useState('');
-
     const [category, setCategory] = useState<SkillFilter>('all');
 
     const normalizedSearch = normalizeText(search);
@@ -41,23 +42,24 @@ const Skills = ({
     const handleToggleVisibility = () => {
         setIsVisible(isVisible => !isVisible);
     };
-    const handleNewSkillChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setNewSkill(event.currentTarget.value);
+
+    const handleAddSkill = (skillName: string): boolean => {
+        const normalizedSkillName = normalizeText(skillName);
+        const isDuplicate = skills.some(skill => normalizeText(skill.name) === normalizedSkillName);
+
+        if (normalizedSkillName.length === 0 || isDuplicate) return false;
+
+        onAddSkill(skillName.trim());
+        return true;
     };
-    const handleAddSkillClick = () => {
-        const normalizedNewSkill = normalizeText(newSkill);
-        if (normalizedNewSkill.length && !skills.some(skill => normalizeText(skill.name) === normalizedNewSkill)) {
-            onAddSkill(newSkill.trim());
-            setNewSkill('');
-        }
-    };    
+  
     const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setCategory(event.currentTarget.value as SkillFilter);
     };
     const handleUpdateSkill = (
         skillId: number,
         skillName: string
-    ) : boolean => {
+    ): boolean => {
         const normalizedSkillName = normalizeText(skillName);
 
         const isDuplicate = skills.some(
@@ -118,20 +120,9 @@ const Skills = ({
                     {buttonText}
                 </button>
 
-                <div className="skills__add">
-                    <input
-                        className="skills__add-input"
-                        value={newSkill}
-                        onChange={handleNewSkillChange}
-                        placeholder="Новый навык"
-                    />
-                    <button
-                        className="skills__add-button"
-                        onClick={handleAddSkillClick}
-                    >
-                        Добавить навык
-                    </button>
-                </div>
+                <AddSkillForm
+                    onAddSkill={handleAddSkill} 
+                />
             </div>
         </section>
     );
