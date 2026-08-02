@@ -71,7 +71,8 @@
 .skills__delete-button,
 .skills__toggle,
 .skills__add-button,
-.skills__save-button {
+.skills__save-button,
+.skills__sort-button {
   padding: 8px 14px;
   border: 1px solid var(--color-border);
   border-radius: 6px;
@@ -83,7 +84,8 @@
 .skills__delete-button:hover,
 .skills__toggle:hover,
 .skills__add-button:hover,
-.skills__save-button:hover {
+.skills__save-button:hover,
+.skills__sort-button:hover {
   background-color: #f5f5f5;
 }
 

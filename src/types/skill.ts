@@ -1,4 +1,5 @@
 export type SkillCategory = 'language' | 'other';
+export type SortOrder = 'asc' | 'desc';
 
 export type SkillFilter = 'all' | SkillCategory;
 

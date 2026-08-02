@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent } from "react";
 
-import type { Skill, SkillFilter } from "../../../types/skill";
+import type { Skill, SkillFilter, SortOrder } from "../../../types/skill";
 import { normalizeText } from "../../../utils/text";
 
 import SkillItem from "./SkillItem";
@@ -26,6 +26,7 @@ const Skills = ({
     const [isVisible, setIsVisible] = useState(true);
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState<SkillFilter>('all');
+    const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
     const normalizedSearch = normalizeText(search);
     const filteredSkills = skills.filter(skill => {
@@ -33,7 +34,14 @@ const Skills = ({
         const matchesCategory = category === 'all' || skill.category === category;
         return matchesSearch && matchesCategory;
     });
-    const sortedByNameSkills = [...filteredSkills].sort((skillA, skillB) => normalizeText(skillA.name).localeCompare(normalizeText(skillB.name)));
+    const sortedByNameSkills = [...filteredSkills].sort((skillA, skillB) => {
+        const comparison = normalizeText(skillA.name).localeCompare(normalizeText(skillB.name));
+
+        return sortOrder === 'asc'
+            ? comparison
+            : -comparison;
+        }
+    );
 
     const buttonText = isVisible ? 'Скрыть навыки' : 'Показать навыки';
 
@@ -57,6 +65,7 @@ const Skills = ({
     const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setCategory(event.currentTarget.value as SkillFilter);
     };
+
     const handleUpdateSkill = (
         skillId: number,
         skillName: string
@@ -78,6 +87,14 @@ const Skills = ({
         return true;
     };
 
+    const handleSortOrderChange = () => {
+        setSortOrder(previousSortOrder =>
+            previousSortOrder === 'asc'
+                ? 'desc'
+                : 'asc'
+        );
+    };
+
     return (
         <section className="skills">
             <div className="container">
@@ -86,8 +103,10 @@ const Skills = ({
                 <SkillFilters
                     search={search}
                     category={category}
+                    sortOrder={sortOrder}
                     onSearchChange={handleSearchChange}
                     onCategoryChange={handleCategoryChange}
+                    onSortOrderChange={handleSortOrderChange}
                 />
                 
                 { isVisible && (

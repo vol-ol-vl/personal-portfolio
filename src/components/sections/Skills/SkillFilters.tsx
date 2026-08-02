@@ -1,19 +1,27 @@
 import type { ChangeEvent } from "react";
-import type { SkillFilter } from "../../../types/skill";
+import type { SkillFilter, SortOrder} from "../../../types/skill";
 
 type SkillFiltersProps = {
     search: string;
     category: SkillFilter;
+    sortOrder: SortOrder;
     onSearchChange: (event: ChangeEvent<HTMLInputElement>) => void;
     onCategoryChange: (event: ChangeEvent<HTMLSelectElement>) => void;
-}
-
+    onSortOrderChange: () => void;
+};
 const SkillFilters = ({
         search,
         category,
+        sortOrder,
         onSearchChange,
-        onCategoryChange
+        onCategoryChange,
+        onSortOrderChange,
     }: SkillFiltersProps) => {
+        const sortButtonText =
+            sortOrder === "asc"
+                ? "Сортировка: А–Я"
+                : "Сортировка: Я–А";
+
         return (
             <div className="skills__filters">
                 <input
@@ -28,6 +36,11 @@ const SkillFilters = ({
                     <option value='language'>Языки программирования</option>
                     <option value='other'>Другие</option>  
                 </select>
+                <button
+                    className="skills__sort-button"
+                    onClick={onSortOrderChange}>
+                        {sortButtonText}
+                </button>
             </div>
         );
 };
