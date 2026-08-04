@@ -34,14 +34,37 @@ const Skills = ({
         const matchesCategory = category === 'all' || skill.category === category;
         return matchesSearch && matchesCategory;
     });
-    const sortedByNameSkills = [...filteredSkills].sort((skillA, skillB) => {
-        const comparison = normalizeText(skillA.name).localeCompare(normalizeText(skillB.name));
+    const sortedByNameSkills = [...filteredSkills].sort(
+        (skillA, skillB) => {
+            const comparison = normalizeText(
+                    skillA.name
+            ).localeCompare(
+                normalizeText(skillB.name)
+            );
 
-        return sortOrder === 'asc'
-            ? comparison
-            : -comparison;
+            return sortOrder === 'asc'
+                ? comparison
+                : -comparison;
         }
     );
+
+    const isValidSkillName = (
+            skillName: string,
+            skillId?: number
+    ): boolean => {
+        const normalizedSkillName = normalizeText(skillName);
+
+        if (normalizedSkillName.length === 0) {
+            return false;
+        }
+
+        const isDuplicate = skills.some(skill =>
+            skill.id !== skillId &&
+            normalizeText(skill.name) === normalizedSkillName
+        );
+
+        return !isDuplicate;
+    };
 
     const buttonText = isVisible ? 'Скрыть навыки' : 'Показать навыки';
 
@@ -53,10 +76,9 @@ const Skills = ({
     };
 
     const handleAddSkill = (skillName: string): boolean => {
-        const normalizedSkillName = normalizeText(skillName);
-        const isDuplicate = skills.some(skill => normalizeText(skill.name) === normalizedSkillName);
-
-        if (normalizedSkillName.length === 0 || isDuplicate) return false;
+        if (!isValidSkillName(skillName)) {
+            return false;
+        }
 
         onAddSkill(skillName.trim());
         return true;
@@ -70,15 +92,7 @@ const Skills = ({
         skillId: number,
         skillName: string
     ): boolean => {
-        const normalizedSkillName = normalizeText(skillName);
-
-        const isDuplicate = skills.some(
-            skill =>
-                skill.id !== skillId &&
-                normalizeText(skill.name) === normalizedSkillName
-        );
-
-        if (normalizedSkillName.length === 0 || isDuplicate) {
+        if (!isValidSkillName(skillName, skillId)) {
             return false;
         }
 

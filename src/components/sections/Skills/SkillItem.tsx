@@ -1,7 +1,6 @@
 import { useState, type ChangeEvent } from "react";
 
 import type { Skill } from "../../../types/skill";
-import { normalizeText } from "../../../utils/text";
 
 type SkillItemProps = {
     skill: Skill;
