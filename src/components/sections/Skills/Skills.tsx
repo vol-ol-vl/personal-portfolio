@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from "react";
+import { useCallback, useMemo, useState, type ChangeEvent } from "react";
 
 import type { Skill, SkillFilter, SortOrder } from "../../../types/skill";
 import { normalizeText } from "../../../utils/text";
@@ -28,27 +28,43 @@ const Skills = ({
     const [category, setCategory] = useState<SkillFilter>('all');
     const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
-    const normalizedSearch = normalizeText(search);
-    const filteredSkills = skills.filter(skill => {
-        const matchesSearch = normalizeText(skill.name).includes(normalizedSearch);
-        const matchesCategory = category === 'all' || skill.category === category;
-        return matchesSearch && matchesCategory;
-    });
-    const sortedByNameSkills = [...filteredSkills].sort(
-        (skillA, skillB) => {
-            const comparison = normalizeText(
-                    skillA.name
-            ).localeCompare(
-                normalizeText(skillB.name)
-            );
+    
+    const filteredSkills = useMemo(() => {
+        const normalizedSearch = normalizeText(search);
 
-            return sortOrder === 'asc'
-                ? comparison
-                : -comparison;
-        }
+        return skills.filter(skill => {            
+            const matchesSearch = normalizeText(skill.name).includes(normalizedSearch);
+            const matchesCategory = category === 'all' || skill.category === category;
+            return matchesSearch && matchesCategory;
+        })
+    }, [
+            skills,
+            search,
+            category
+        ]
+    );
+    
+    const sortedByNameSkills = useMemo(() => {
+            return [...filteredSkills].sort(
+                (skillA, skillB) => {
+                    const comparison = normalizeText(
+                            skillA.name
+                    ).localeCompare(
+                        normalizeText(skillB.name)
+                    );
+
+                    return sortOrder === 'asc'
+                        ? comparison
+                        : -comparison;
+                }
+            );
+        },[
+            filteredSkills,
+            sortOrder
+        ]
     );
 
-    const isValidSkillName = (
+    const isValidSkillName = useCallback((
             skillName: string,
             skillId?: number
     ): boolean => {
@@ -64,7 +80,7 @@ const Skills = ({
         );
 
         return !isDuplicate;
-    };
+    }, [skills]);
 
     const buttonText = isVisible ? 'Скрыть навыки' : 'Показать навыки';
 
@@ -75,20 +91,20 @@ const Skills = ({
         setIsVisible(isVisible => !isVisible);
     };
 
-    const handleAddSkill = (skillName: string): boolean => {
+    const handleAddSkill = useCallback((skillName: string): boolean => {
         if (!isValidSkillName(skillName)) {
             return false;
         }
 
         onAddSkill(skillName.trim());
         return true;
-    };
+    }, [isValidSkillName, onAddSkill]);
   
     const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setCategory(event.currentTarget.value as SkillFilter);
     };
 
-    const handleUpdateSkill = (
+    const handleUpdateSkill = useCallback((
         skillId: number,
         skillName: string
     ): boolean => {
@@ -99,7 +115,7 @@ const Skills = ({
         onUpdateSkill(skillId, skillName.trim());
         
         return true;
-    };
+    }, [isValidSkillName, onUpdateSkill]);
 
     const handleSortOrderChange = () => {
         setSortOrder(previousSortOrder =>

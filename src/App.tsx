@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import type { Skill } from './types/skill'
 
@@ -67,22 +67,22 @@ let nextSkillId = initialSkills.length + 1;
 
 const App = () => {
   const [skills, setSkills] = useState(initialSkills);
-  const onAddSkill = (skillName: string) => {
+  const onAddSkill = useCallback((skillName: string) => {
     const newSkill = createSkill(
       nextSkillId++,
       skillName,
       'other'
     );
     setSkills(prev => [...prev, newSkill]);
-  };
+  }, []);
 
-  const onDeleteSkill = (skillId: number) => {
+  const onDeleteSkill = useCallback((skillId: number) => {
     setSkills(prev => prev.filter(item => item.id !== skillId));
-  };
+  }, []);
 
-  const onUpdateSkill = (skillId: number, skillName: string) => {
+  const onUpdateSkill = useCallback((skillId: number, skillName: string) => {
     setSkills(prev => prev.map(skill => skill.id === skillId ? {...skill, name: skillName} : skill));
-  }
+  }, []);
 
   return (
     <>
@@ -100,7 +100,7 @@ const App = () => {
       <Contact />
       <Footer />
     </>
-  )
+  );
 };
 
-export default App
+export default App;

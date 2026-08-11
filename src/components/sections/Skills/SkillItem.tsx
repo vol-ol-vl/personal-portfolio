@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from "react";
+import { memo, useState, type ChangeEvent } from "react";
 
 import type { Skill } from "../../../types/skill";
 
@@ -75,4 +75,4 @@ const SkillItem = ({
         );
     };
 
-export default SkillItem;
+export default memo(SkillItem);
