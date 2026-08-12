@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useReducer, useRef } from 'react'
 
 import type { Skill } from './types/skill'
 
@@ -10,6 +10,7 @@ import About from './components/sections/About'
 import Skills from './components/sections/Skills/Skills'
 import Hero from './components/sections/Hero'
 import Contact from './components/sections/Contact'
+import { skillsReducer } from './components/sections/Skills/skillsReducer'
 
 const profile = {
   name: 'Olga Volkova',
@@ -63,25 +64,40 @@ const initialSkills: Skill[] = [
   },
   
 ];
-let nextSkillId = initialSkills.length + 1;
 
 const App = () => {
-  const [skills, setSkills] = useState(initialSkills);
+  const nextSkillId = useRef(initialSkills.length + 1);
+  const [skills, dispatch] = useReducer(
+    skillsReducer,
+    initialSkills
+  );
+
   const onAddSkill = useCallback((skillName: string) => {
     const newSkill = createSkill(
-      nextSkillId++,
+      nextSkillId.current++,
       skillName,
       'other'
     );
-    setSkills(prev => [...prev, newSkill]);
+
+    dispatch({
+      type: 'addSkill',
+      skill: newSkill
+    });
   }, []);
 
   const onDeleteSkill = useCallback((skillId: number) => {
-    setSkills(prev => prev.filter(item => item.id !== skillId));
+    dispatch({
+      type: 'deleteSkill',
+      skillId
+    });
   }, []);
 
   const onUpdateSkill = useCallback((skillId: number, skillName: string) => {
-    setSkills(prev => prev.map(skill => skill.id === skillId ? {...skill, name: skillName} : skill));
+    dispatch({
+      type: 'updateSkill',
+      skillId,
+      skillName
+    });
   }, []);
 
   return (
