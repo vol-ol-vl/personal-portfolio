@@ -1,6 +1,21 @@
 .header {
+  --header-bg: #ffffff;
+  --header-text: #222222;
+  --header-secondary-text: #666666;
+
   padding-block: 24px;
   border-bottom: 1px solid var(--color-border);
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.header--dark {
+    --header-bg: #222222;
+    --header-text: #ffffff;
+    --header-secondary-text: #bbbbbb;
 }
 
 .header__brand {
@@ -14,10 +29,10 @@
 }
 
 .header__role {
-  color: #666;
+  color: var(--header-secondary-text);
 }
 
 .header__skill-count {
   margin-top: 8px;
-  color: #666;
+  color: var(--header-secondary-text);
 }
