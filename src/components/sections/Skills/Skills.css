@@ -91,12 +91,20 @@
 
 .skills__search,
 .skills__category,
+.skills__category-select,
 .skills__add-input,
 .skills__edit-input {
   min-height: 36px;
   padding: 6px 10px;
   border: 1px solid var(--color-border);
   border-radius: 6px;
+  font: inherit;
+}
+
+.skills__category-select {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  cursor: pointer;
 }
 
 .skills__delete-button {

@@ -1,9 +1,10 @@
 import { useCallback, useReducer, useRef } from 'react'
 
-import type { Skill } from './types/skill'
+import type { Skill, SkillCategory } from './types/skill'
 
 import { createSkill } from './utils/skill'
 
+import { ThemeProvider } from './context/ThemeContext'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import About from './components/sections/About'
@@ -100,8 +101,16 @@ const App = () => {
     });
   }, []);
 
+  const onUpdateSkillCategory = useCallback((skillId: number, skillCategory: SkillCategory) => {
+    dispatch({
+      type: 'updateSkillCategory',
+      skillId,
+      skillCategory
+    });
+  }, []);
+
   return (
-    <>
+    <ThemeProvider>
       <Header 
         name={profile.name}
         role={profile.role}
@@ -112,10 +121,11 @@ const App = () => {
         skills={skills}
         onAddSkill={onAddSkill}
         onDeleteSkill={onDeleteSkill}
-        onUpdateSkill={onUpdateSkill} />
+        onUpdateSkill={onUpdateSkill}
+        onUpdateSkillCategory={onUpdateSkillCategory} />
       <Contact />
       <Footer />
-    </>
+    </ThemeProvider>
   );
 };
 

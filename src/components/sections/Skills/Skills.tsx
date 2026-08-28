@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState, type ChangeEvent } from "react";
 
-import type { Skill, SkillFilter, SortOrder } from "../../../types/skill";
+import type { Skill, SkillCategory, SkillFilter, SortOrder } from "../../../types/skill";
 import { normalizeText } from "../../../utils/text";
 
 import SkillItem from "./SkillItem";
@@ -13,14 +13,16 @@ type SkillsProps = {
     skills: Skill[],
     onAddSkill: (skillName: string) => void,
     onDeleteSkill: (skillId: number) => void,
-    onUpdateSkill: (skillId: number, skillName: string) => void
+    onUpdateSkill: (skillId: number, skillName: string) => void,
+    onUpdateSkillCategory: (skillId: number, skillCategory: SkillCategory) => void
 }
 
 const Skills = ({
         skills, 
         onAddSkill, 
         onDeleteSkill,
-        onUpdateSkill
+        onUpdateSkill,
+        onUpdateSkillCategory,
     }: SkillsProps) => {
 
     const [isVisible, setIsVisible] = useState(true);
@@ -148,6 +150,7 @@ const Skills = ({
                                     key={skill.id}
                                     onDeleteSkill={onDeleteSkill}
                                     onUpdateSkill={handleUpdateSkill}
+                                    onUpdateSkillCategory={onUpdateSkillCategory}
                                 />
                                 )
                             )}

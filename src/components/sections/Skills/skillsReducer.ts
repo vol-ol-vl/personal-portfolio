@@ -1,4 +1,4 @@
-import type {Skill} from '../../../types/skill';
+import type {Skill, SkillCategory} from '../../../types/skill';
 
 type SkillAction = 
     | {
@@ -13,6 +13,11 @@ type SkillAction =
         type: 'updateSkill';
         skillId: number;
         skillName: string;
+    }
+    | {
+        type: 'updateSkillCategory';
+        skillId: number;
+        skillCategory: SkillCategory
     };
 
 export const skillsReducer = (
@@ -30,6 +35,12 @@ export const skillsReducer = (
             return state.map(skill =>
                 skill.id === action.skillId
                     ? {...skill, name: action.skillName}
+                    : skill
+            );
+        case 'updateSkillCategory':
+            return state.map(skill =>
+                skill.id === action.skillId
+                    ? {...skill, category: action.skillCategory}
                     : skill
             );
         default: 

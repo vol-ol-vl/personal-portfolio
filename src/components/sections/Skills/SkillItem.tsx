@@ -1,17 +1,19 @@
 import { memo, useState, type ChangeEvent } from "react";
 
-import type { Skill } from "../../../types/skill";
+import type { Skill, SkillCategory } from "../../../types/skill";
 
 type SkillItemProps = {
     skill: Skill;
     onDeleteSkill: (skillId: number) => void;
     onUpdateSkill: (skillId: number, skillName: string) => boolean;
+    onUpdateSkillCategory: (skilId: number, skillCategory: SkillCategory) => void
 }
 
 const SkillItem = ({
         skill,
         onDeleteSkill,
-        onUpdateSkill
+        onUpdateSkill,
+        onUpdateSkillCategory
     }: SkillItemProps ) => {
 
         const [isEditing, setIsEditing] = useState(false);
@@ -33,6 +35,13 @@ const SkillItem = ({
             if (isUpdated) {
                 setIsEditing(false);
             }
+        };
+
+        const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+            onUpdateSkillCategory(
+                skill.id,
+                event.currentTarget.value as SkillCategory
+            );
         };
 
         return (
@@ -64,7 +73,14 @@ const SkillItem = ({
                         </button>
                     </div>
                 )}
-
+                <select
+                    className="skills__category-select"
+                    value={skill.category}
+                    onChange={handleCategoryChange}
+                >
+                    <option value="language">Язык</option>
+                    <option value="other">Другое</option>
+                </select>
                 <button
                     className="skills__delete-button"
                     onClick={() => onDeleteSkill(skill.id)}
