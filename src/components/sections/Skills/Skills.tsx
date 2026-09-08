@@ -8,6 +8,7 @@ import SkillFilters from "./SkillFilters";
 import AddSkillForm from "./AddSkillForm";
 
 import './Skills.css';
+import useToggle from "../../../hooks/useToggle";
 
 type SkillsProps = {
     skills: Skill[],
@@ -25,7 +26,7 @@ const Skills = ({
         onUpdateSkillCategory,
     }: SkillsProps) => {
 
-    const [isVisible, setIsVisible] = useState(true);
+    const {isOpen: isVisible, toggle} = useToggle(true);
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState<SkillFilter>('all');
     const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
@@ -88,9 +89,6 @@ const Skills = ({
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearch(event.currentTarget.value);
-    };
-    const handleToggleVisibility = () => {
-        setIsVisible(isVisible => !isVisible);
     };
 
     const handleAddSkill = useCallback((skillName: string): boolean => {
@@ -160,7 +158,7 @@ const Skills = ({
 
                 <button
                     className="skills__toggle"
-                    onClick={handleToggleVisibility}
+                    onClick={toggle}
                 >
                     {buttonText}
                 </button>
