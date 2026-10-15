@@ -2,6 +2,7 @@
   --header-bg: #ffffff;
   --header-text: #222222;
   --header-secondary-text: #666666;
+  --nav-hover-bg: #eeeeee;
 
   padding-block: 24px;
   border-bottom: 1px solid var(--color-border);
@@ -13,9 +14,10 @@
 }
 
 .header--dark {
-    --header-bg: #222222;
-    --header-text: #ffffff;
-    --header-secondary-text: #bbbbbb;
+  --header-bg: #222222;
+  --header-text: #ffffff;
+  --header-secondary-text: #bbbbbb;
+  --nav-hover-bg: #3a3a3a;
 }
 
 .header__brand {
@@ -35,4 +37,33 @@
 .header__skill-count {
   margin-top: 8px;
   color: var(--header-secondary-text);
+}
+
+.header nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav__link {
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.nav__link:hover {
+  background-color: var(--nav-hover-bg);
+}
+
+.nav__link--active {
+  background-color: var(--header-text);
+  color: var(--header-bg);
+}
+
+.nav__link--active:hover {
+  background-color: var(--header-secondary-text);
 }
