@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState, type ChangeEvent } from "react";
+import { useSearchParams } from "react-router";
 
-import type { SkillFilter, SortOrder } from "../../../types/skill";
+import type { SkillFilter, SortOrder, SkillCategory} from "../../../types/skill";
 import { normalizeText } from "../../../utils/text";
 
 import SkillItem from "./SkillItem";
@@ -16,8 +17,20 @@ const Skills = () => {
     const {skills, addSkill, deleteSkill, updateSkill, updateSkillCategory} = useSkills();
 
     const {isOpen: isVisible, toggle} = useToggle(true);
-    const [search, setSearch] = useState('');
-    const [category, setCategory] = useState<SkillFilter>('all');
+    const skillCategories = ['language', 'other'] as const;
+    const [searchParams, setSearchParams] = useSearchParams();
+    const search = searchParams.get('search') ?? '';
+
+    const isSkillCategory = (value: string): value is SkillCategory => {
+        return skillCategories.some(category => category === value);
+    };
+
+    const paramsGetCategory = searchParams.get('category');
+    let category: SkillFilter = 'all';
+
+    if ( paramsGetCategory !== null && isSkillCategory(paramsGetCategory)) {
+        category = paramsGetCategory;
+    }
     const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
     
@@ -77,7 +90,16 @@ const Skills = () => {
     const buttonText = isVisible ? 'Скрыть навыки' : 'Показать навыки';
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setSearch(event.currentTarget.value);
+        const changedSearch = event.currentTarget.value;
+        setSearchParams(prev => {
+            if (changedSearch.length) {
+                prev.set('search', changedSearch);
+            } else {
+                prev.delete('search')
+            }
+
+            return prev;
+        });
     };
 
     const handleAddSkill = useCallback((skillName: string): boolean => {
@@ -90,7 +112,15 @@ const Skills = () => {
     }, [isValidSkillName, addSkill]);
   
     const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setCategory(event.currentTarget.value as SkillFilter);
+        const selectedCategory = event.currentTarget.value as SkillFilter;
+        setSearchParams(prev => {
+            if (selectedCategory === 'all') {
+                prev.delete('category')
+            } else {
+                prev.set('category', selectedCategory);
+            }
+            return prev;
+        });
     };
 
     const handleUpdateSkill = useCallback((
