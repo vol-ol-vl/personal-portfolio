@@ -11,11 +11,15 @@ import AddSkillForm from "./AddSkillForm";
 import './Skills.css';
 import useToggle from "../../../hooks/useToggle";
 
-import { useSkills } from "../../../context/SkillsContext";
+import { useAppSelector, useAppDispatch } from "../../../store/hooks";
+import { addSkill, deleteSkill, updateSkill, updateSkillCategory } from "../../../store/skillsSlice";
+import { createSkill } from "../../../utils/skill";
 
 const Skills = () => {
-    const {skills, addSkill, deleteSkill, updateSkill, updateSkillCategory} = useSkills();
-
+    const skills = useAppSelector(state => state.skills);
+    const dispatch = useAppDispatch();
+    
+    const nextId = Math.max(0, ...skills.map(skill => skill.id)) + 1;
     const {isOpen: isVisible, toggle} = useToggle(true);
     const skillCategories = ['language', 'other'] as const;
     const [searchParams, setSearchParams] = useSearchParams();
@@ -106,10 +110,14 @@ const Skills = () => {
         if (!isValidSkillName(skillName)) {
             return false;
         }
-
-        addSkill(skillName.trim());
+        const newSkill = createSkill(nextId, skillName.trim(), 'other');
+        dispatch(addSkill(newSkill));
         return true;
-    }, [isValidSkillName, addSkill]);
+    }, [isValidSkillName, dispatch, nextId]);
+
+    const handleDeleteSkill = (skillId: number)=> {
+        dispatch(deleteSkill({skillId}));
+    };
   
     const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const selectedCategory = event.currentTarget.value as SkillFilter;
@@ -131,10 +139,14 @@ const Skills = () => {
             return false;
         }
 
-        updateSkill(skillId, skillName.trim());
+        dispatch(updateSkill({skillId, skillName: skillName.trim()}));
         
         return true;
-    }, [isValidSkillName, updateSkill]);
+    }, [isValidSkillName, dispatch]);
+
+    const handleUpdateSkillCategory = (skillId: number, skillCategory: SkillCategory) => {
+        dispatch(updateSkillCategory({skillId, skillCategory}))
+    };
 
     const handleSortOrderChange = () => {
         setSortOrder(previousSortOrder =>
@@ -165,9 +177,9 @@ const Skills = () => {
                                 <SkillItem
                                     skill={skill}
                                     key={skill.id}
-                                    onDeleteSkill={deleteSkill}
+                                    onDeleteSkill={handleDeleteSkill}
                                     onUpdateSkill={handleUpdateSkill}
-                                    onUpdateSkillCategory={updateSkillCategory}
+                                    onUpdateSkillCategory={handleUpdateSkillCategory}
                                 />
                                 )
                             )}

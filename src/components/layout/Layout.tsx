@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { useSkills } from "../../context/SkillsContext";
+import { useAppSelector } from "../../store/hooks";
 
 import Header from "./Header"
 import Footer from "./Footer"
@@ -7,7 +7,8 @@ import Footer from "./Footer"
 import { profile } from "../../data/profile";
 
 const Layout = () => {
-    const {skills} = useSkills();
+    
+    const skills = useAppSelector(state => state.skills);
     return (
         <>
             <Header 

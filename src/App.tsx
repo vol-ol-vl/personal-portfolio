@@ -4,7 +4,7 @@ import { RouterProvider } from 'react-router'
 import { Provider } from 'react-redux';
 import store from './store/store';
 
-import { router } from './router'
+import { router } from './router';
 
 
 const App = () => {

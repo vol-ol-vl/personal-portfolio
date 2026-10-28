@@ -4,6 +4,7 @@ import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
 import SkillsPage from "./pages/SkillsPage";
 import ContactPage from "./pages/ContactPage";
+import SkillsContextPage from "./pages/SkillsContextPage";
 
 export const router = createBrowserRouter([
     {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
             {
                 path: 'contact',
                 element: <ContactPage />
+            },
+            {
+                path: 'skills-context',
+                element: <SkillsContextPage />
             },
         ],
     },
