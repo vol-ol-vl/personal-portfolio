@@ -1,8 +1,8 @@
-import { NavLink } from 'react-router';
+import { NavLink } from "react-router";
 
-import './Header.css';
+import "./Header.css";
 
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from "../../context/theme/ThemeContext";
 
 type HeaderProps = {
   name: string;
@@ -10,30 +10,30 @@ type HeaderProps = {
   skillCount: number;
 };
 
-const Header = ({name, role, skillCount}: HeaderProps) => {
-  const {theme, toggleTheme} = useTheme();
+const Header = ({ name, role, skillCount }: HeaderProps) => {
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <header className={`header header--${theme}`}>
-      <div className='container'>
+      <div className="container">
         <div className="header__brand">
-          <h1 className='header__name'>{name}</h1>
-          <p className='header__role'>{role}</p>
+          <h1 className="header__name">{name}</h1>
+          <p className="header__role">{role}</p>
         </div>
         <nav>
           <NavLink
             to="/"
             className={({ isActive }) =>
-              isActive ? 'nav__link nav__link--active' : 'nav__link'
+              isActive ? "nav__link nav__link--active" : "nav__link"
             }
             end
           >
             Главная
           </NavLink>
-         <NavLink
+          <NavLink
             to="/skills"
             className={({ isActive }) =>
-              isActive ? 'nav__link nav__link--active' : 'nav__link'
+              isActive ? "nav__link nav__link--active" : "nav__link"
             }
           >
             Навыки
@@ -41,7 +41,7 @@ const Header = ({name, role, skillCount}: HeaderProps) => {
           <NavLink
             to="/contact"
             className={({ isActive }) =>
-              isActive ? 'nav__link nav__link--active' : 'nav__link'
+              isActive ? "nav__link nav__link--active" : "nav__link"
             }
           >
             Контакты

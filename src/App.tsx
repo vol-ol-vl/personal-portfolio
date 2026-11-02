@@ -1,11 +1,10 @@
-import { ThemeProvider } from './context/ThemeContext'
-import { SkillsProvider } from './context/SkillsContext';
-import { RouterProvider } from 'react-router'
-import { Provider } from 'react-redux';
-import store from './store/store';
+import { ThemeProvider } from "./context/theme/ThemeProvider";
+import { SkillsProvider } from "./context/skills/SkillsProvider";
+import { RouterProvider } from "react-router";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
-import { router } from './router';
-
+import { router } from "./router";
 
 const App = () => {
   return (
