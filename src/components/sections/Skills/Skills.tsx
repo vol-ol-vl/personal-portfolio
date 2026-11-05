@@ -29,7 +29,15 @@ const Skills = () => {
     isLoading: isSkillsLoading,
     isError: isSkillsError,
   } = useGetSkillsQuery();
-  const [addSkillRequest] = useAddSkillMutation();
+  const [
+    addSkillRequest,
+    {
+      isLoading: isAddingSkill,
+      isError: isAddSkillError,
+      isSuccess: isAddSkillSuccess,
+      reset: resetAddSkill,
+    },
+  ] = useAddSkillMutation();
   const [deleteSkillRequest] = useDeleteSkillMutation();
   const [updateSkillRequest] = useUpdateSkillMutation();
   const [updateSkillCategoryRequest] = useUpdateSkillCategoryMutation();
@@ -108,15 +116,21 @@ const Skills = () => {
   };
 
   const handleAddSkill = useCallback(
-    (skillName: string): boolean => {
+    async (skillName: string): Promise<boolean> => {
       if (!isValidSkillName(skillName)) {
         return false;
       }
-      addSkillRequest({
-        name: skillName.trim(),
-        category: "other",
-      });
-      return true;
+      try {
+        await addSkillRequest({
+          name: skillName.trim(),
+          category: "other",
+        }).unwrap();
+
+        return true;
+      } catch (error) {
+        console.error("Ошибка добавления навыка:", error);
+        return false;
+      }
     },
     [isValidSkillName, addSkillRequest],
   );
@@ -207,7 +221,13 @@ const Skills = () => {
           {buttonText}
         </button>
 
-        <AddSkillForm onAddSkill={handleAddSkill} />
+        <AddSkillForm
+          onAddSkill={handleAddSkill}
+          isLoading={isAddingSkill}
+          isError={isAddSkillError}
+          isSuccess={isAddSkillSuccess}
+          reset={resetAddSkill}
+        />
       </div>
     </section>
   );
