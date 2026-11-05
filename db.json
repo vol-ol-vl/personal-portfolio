@@ -1,0 +1,49 @@
+{
+  "skills": [
+    {
+      "id": 1,
+      "name": "React",
+      "category": "other"
+    },
+    {
+      "id": 2,
+      "name": "JavaScript",
+      "category": "language"
+    },
+    {
+      "id": 3,
+      "name": "Ajax",
+      "category": "language"
+    },
+    {
+      "id": 4,
+      "name": "REST API",
+      "category": "other"
+    },
+    {
+      "id": 5,
+      "name": "HTML",
+      "category": "other"
+    },
+    {
+      "id": 6,
+      "name": "CSS",
+      "category": "other"
+    },
+    {
+      "id": 9,
+      "name": "Git",
+      "category": "other"
+    },
+    {
+      "name": "RTK Query",
+      "category": "other",
+      "id": 11
+    },
+    {
+      "name": "БЭМ",
+      "category": "other",
+      "id": 12
+    }
+  ]
+}
