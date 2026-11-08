@@ -136,8 +136,14 @@ const Skills = () => {
   );
 
   const handleDeleteSkill = useCallback(
-    (skillId: number) => {
-      deleteSkillRequest(skillId);
+    async (skillId: number): Promise<boolean> => {
+      try {
+        await deleteSkillRequest(skillId).unwrap();
+        return true;
+      } catch (error) {
+        console.error("Ошибка удаления навыка:", error);
+        return false;
+      }
     },
     [deleteSkillRequest],
   );
@@ -155,12 +161,20 @@ const Skills = () => {
   };
 
   const handleUpdateSkill = useCallback(
-    (skillId: number, skillName: string): boolean => {
+    async (skillId: number, skillName: string): Promise<boolean> => {
       if (!isValidSkillName(skillName, skillId)) {
         return false;
       }
-      updateSkillRequest({ skillId, skillName: skillName.trim() });
-      return true;
+      try {
+        await updateSkillRequest({
+          skillId,
+          skillName: skillName.trim(),
+        }).unwrap();
+        return true;
+      } catch (error) {
+        console.error("Ошибка изменения навыка:", error);
+        return false;
+      }
     },
     [isValidSkillName, updateSkillRequest],
   );
