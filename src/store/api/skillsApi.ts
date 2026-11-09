@@ -24,7 +24,20 @@ export const skillsApi = createApi({
         url: "/skills/" + skillId,
         method: "DELETE",
       }),
-      invalidatesTags: ["Skills"],
+      async onQueryStarted(skillId, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          skillsApi.util.updateQueryData("getSkills", undefined, (draft) => {
+            return draft.filter((item) => item.id !== skillId);
+          }),
+        );
+
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          console.error("Произошла ошибка " + error);
+          patchResult.undo();
+        }
+      },
     }),
     updateSkill: build.mutation<Skill, { skillId: number; skillName: string }>({
       query: ({ skillId, skillName }) => ({
@@ -32,7 +45,27 @@ export const skillsApi = createApi({
         method: "PATCH",
         body: { name: skillName },
       }),
-      invalidatesTags: ["Skills"],
+      async onQueryStarted(
+        { skillId, skillName },
+        { dispatch, queryFulfilled },
+      ) {
+        const patchResult = dispatch(
+          skillsApi.util.updateQueryData("getSkills", undefined, (draft) => {
+            const skill = draft.find((item) => item.id === skillId);
+
+            if (skill) {
+              skill.name = skillName;
+            }
+          }),
+        );
+
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          patchResult.undo();
+          console.error("Произошла ошибка при изменении навыка" + error);
+        }
+      },
     }),
     updateSkillCategory: build.mutation<
       Skill,
