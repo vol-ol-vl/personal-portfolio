@@ -1,18 +1,16 @@
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registrationSchema } from "./registrationSchema";
+import type { RegistrationFormValues } from "./registrationSchema";
 
-type RegistrationFormValues = {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
 const RegistrationForm = () => {
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
-  } = useForm<RegistrationFormValues>();
+  } = useForm<RegistrationFormValues>({
+    resolver: zodResolver(registrationSchema),
+  });
 
   const onSubmit = (data: RegistrationFormValues) => {
     console.log(data);
@@ -23,57 +21,23 @@ const RegistrationForm = () => {
       <h2>Registration</h2>
       <div>
         <label htmlFor="name">Имя</label>
-        <input
-          {...register("name", {
-            required: "Введите имя",
-            minLength: {
-              value: 2,
-              message: "Минимум 2 символа",
-            },
-          })}
-          type="text"
-          id="name"
-        />
+        <input {...register("name")} type="text" id="name" />
         {errors.name && <p>{errors.name.message}</p>}
       </div>
       <div>
         <label htmlFor="email">Email</label>
-        <input
-          {...register("email", {
-            required: "Введите email",
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "Введите корректный email",
-            },
-          })}
-          type="email"
-          id="email"
-        />
+        <input {...register("email")} type="email" id="email" />
         {errors.email && <p>{errors.email.message}</p>}
       </div>
       <div>
         <label htmlFor="password">Пароль</label>
-        <input
-          {...register("password", {
-            required: "Введите пароль",
-            minLength: {
-              value: 8,
-              message: "Пароль должен содержать минимум 8 символов",
-            },
-          })}
-          type="password"
-          id="password"
-        />
+        <input {...register("password")} type="password" id="password" />
         {errors.password && <p>{errors.password.message}</p>}
       </div>
       <div>
         <label htmlFor="confirmPassword">Подтверждение пароля</label>
         <input
-          {...register("confirmPassword", {
-            required: "Повторите пароль",
-            validate: (value) =>
-              value === getValues("password") || "Пароли не совпадают",
-          })}
+          {...register("confirmPassword")}
           type="password"
           id="confirmPassword"
         />
