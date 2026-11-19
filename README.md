@@ -1,69 +1,65 @@
-# React + TypeScript + Vite
+# Personal Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Проект личного портфолио, созданный на React и TypeScript. Используется для демонстрации навыков работы с современным frontend-стеком и различными подходами к управлению состоянием приложения.
 
-Currently, two official plugins are available:
+## Реализовано
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Компонентная архитектура на React с использованием TypeScript.
+- Маршрутизация с помощью React Router.
+- Управление состоянием с помощью Redux Toolkit.
+- Работа с Context API для глобального состояния.
+- Создание собственных React-хуков.
+- Фильтрация, сортировка и поиск навыков.
+- Синхронизация параметров фильтрации с URL.
+- Добавление, редактирование и удаление навыков.
 
-## Expanding the ESLint configuration
+## Технологии
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React
+- TypeScript
+- Redux Toolkit
+- React Redux
+- React Router
+- Context API
+- Vite
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Структура проекта
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+В проекте представлены два варианта реализации страницы навыков:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- `/skills` — управление состоянием с помощью Redux Toolkit.
+- `/skills-context` — управление состоянием с помощью Context API.
+
+Это позволяет сравнить разные подходы к организации и управлению состоянием React-приложения.
+
+## Запуск проекта
+
+Клонировать репозиторий:
+
+```bash
+git clone https://github.com/vol-ol-vl/personal-portfolio.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Перейти в папку проекта:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+cd personal-portfolio
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Установить зависимости:
+
+```bash
+npm install
+```
+
+Запустить локальный сервер:
+
+```bash
+npm run dev
+```
+
+Production-сборка:
+
+```bash
+npm run build
 ```
